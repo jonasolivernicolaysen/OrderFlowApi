@@ -9,16 +9,5 @@ namespace OrderFlowApi.Models.DTOs
         public OrderStatus Status { get; set; }
         public int TotalAmount { get; set; }
         public DateTime CreatedAt { get; set; }
-
-        public static OrderDto ToDto(OrderModel order)
-        {
-            return new OrderDto
-            {
-                OrderId = order.OrderId,
-                Status = order.Status,
-                TotalAmount = order.TotalAmount,
-                CreatedAt = order.CreatedAt
-            };
-        }
     }
 }
