@@ -2,16 +2,17 @@
 {
     public enum OrderStatus
     {
-        received,
-        rejected,
-        completed,
-        failed
+        Received,
+        Rejected,
+        Completed,
+        Failed,
+        Shipped
     }
 
     public enum PaymentStatus
     {
-        received,
-        pending,
-        failed
+        Received,
+        Pending,
+        Failed
     }
 }
