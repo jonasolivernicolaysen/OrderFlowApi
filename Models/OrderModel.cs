@@ -1,13 +1,24 @@
-﻿namespace OrderFlowApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OrderFlowApi.Models
 {
     public class OrderModel
     {
+        [Key]
         public Guid OrderId { get; set; }
+
         public int UserId { get; set; }
-        public int ProductId { get; set; }
+
+        [Required]
+        public Guid ProductId { get; set; }
+
         public OrderStatus Status { get; set; }
+
+        [Range(1, 100000)]
         public int Quantity { get; set; }
+
         public DateTime CreatedAt { get; set; }
+
         public DateTime LastUpdatedAt { get; set; }
     }
 }

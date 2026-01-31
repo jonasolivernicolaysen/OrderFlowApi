@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OrderFlowApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +10,26 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlite("Data Source=orderflow.db");
-});
+var dbPath = Path.Combine(
+    builder.Environment.ContentRootPath,
+    "orderflow.db"
+);
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite($"Data Source={dbPath}")
+);
+
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<ProductService>();
+
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(
+            new System.Text.Json.Serialization.JsonStringEnumConverter()
+        );
+    });
 
 
 var app = builder.Build();

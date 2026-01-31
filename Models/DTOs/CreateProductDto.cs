@@ -1,13 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OrderFlowApi.Models
+namespace OrderFlowApi.Models.DTOs
 {
-
-    // update productmodel to include createdat and lastupdatedat, maybe add stock quantity later
-    public class ProductModel
+    public class CreateProductDto
     {
-        [Key]
-        public Guid ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string Description { get; set; } = string.Empty;
