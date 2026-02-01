@@ -12,7 +12,9 @@ namespace OrderFlowApi.Mappers
                 ProductName = product.ProductName,
                 CreatedByUserId = userId,
                 Price = product.Price,
-                Description = product.Description
+                Description = product.Description,
+                CreatedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow
             };
         }
 

@@ -49,5 +49,12 @@ namespace OrderFlowApi.Controllers
         }
 
         // cancel order
+        [HttpPut("{orderId:guid}/cancel")]
+        public async Task<IActionResult> CancelOrder(Guid orderId)
+        { 
+            var userId = FakeUserLogic.GetCurrentUserId();
+            var result = await _orderService.CancelOrderAsync(orderId, userId);
+            return Ok(OrderMapper.ToDto(result));
+        }
     }
 }

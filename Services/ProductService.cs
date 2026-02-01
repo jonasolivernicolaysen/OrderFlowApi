@@ -49,8 +49,9 @@ namespace OrderFlowApi.Services
 
             product.ProductName = dto.ProductName;
             product.Price = dto.Price;
-            product.Description = dto.Description
-                ;
+            product.Description = dto.Description;
+            product.LastUpdatedAt= DateTime.UtcNow;
+
             await _context.SaveChangesAsync();
             return product;
         }

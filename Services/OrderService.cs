@@ -64,5 +64,26 @@ namespace OrderFlowApi.Services
 
         // cancel order
         // somehow send request to controller. this action should only be possible if order is not shipped
+        public async Task<OrderModel> CancelOrderAsync(Guid orderId, int userId)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+                throw new OrderNotFoundException(orderId);
+
+            if (order.UserId != userId)
+                throw new UserNotAuthorizedException();
+
+            if (order.Status == OrderStatus.Shipped)
+                throw new InvalidOrderStateException("Cannot cancel shipped order.");
+
+            if (order.Status == OrderStatus.Cancelled)
+                return order;
+
+            order.Status = OrderStatus.Cancelled;
+            order.LastUpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return order;
+        }
     }
 }
