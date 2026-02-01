@@ -1,8 +1,8 @@
 ﻿namespace OrderFlowApi.Exceptions
 {
-    public class BadProductlistingException : Exception
+    public class BadProductListingException : Exception
     {
-        public BadProductlistingException(string message)
+        public BadProductListingException(string message)
             : base(message)
         {
         }

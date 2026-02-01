@@ -18,9 +18,13 @@ namespace OrderFlowApi.Services
         // create product listing
         public async Task<ProductModel> CreateProductListingAsync(CreateProductDto dto, int userId)
         {
+            if (string.IsNullOrEmpty(dto.ProductName))
+                throw new BadProductListingException("Product name cannot be empty");
+
+            if (dto.Price <= 0)
+                throw new BadProductListingException("Price cannot be less than zero");
+
             var product = ProductMapper.ToProductModel(dto, userId);
-            if (product == null)
-                throw new BadProductlistingException("Product listing if insufficcient");
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -32,12 +36,16 @@ namespace OrderFlowApi.Services
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null)
-            {
                 throw new ProductNotFoundException(productId);
-            }
-
+            
             if (product.CreatedByUserId != userId)
                 throw new UserNotAuthorizedException();
+
+            if (string.IsNullOrEmpty(dto.ProductName))
+                throw new BadProductListingException("Product name cannot be empty");
+
+            if (dto.Price <= 0)
+                throw new BadProductListingException("Price cannot be less than zero");
 
             product.ProductName = dto.ProductName;
             product.Price = dto.Price;
@@ -48,13 +56,14 @@ namespace OrderFlowApi.Services
         }
 
         // delete product listing
-        public async Task<ProductModel> DeleteProductListingAsync(Guid productId)
+        public async Task<ProductModel> DeleteProductListingAsync(Guid productId, int userId)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null)
-            {
                 throw new ProductNotFoundException(productId);
-            }
+            
+            if (product.CreatedByUserId != userId)
+                throw new UserNotAuthorizedException();
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
@@ -67,15 +76,11 @@ namespace OrderFlowApi.Services
             var products = await _context.Products.
                 Where(p => p.CreatedByUserId == userId).ToListAsync();
 
-            if (products == null || products.Count == 0)
-            {
-                throw new NoProductsException("No products found");
-            }
             return products;
         }
 
         // get product by id
-        public async Task<ProductModel> GetProductAsync(Guid productId)
+        public async Task<ProductModel> GetProductByIdAsync(Guid productId)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null)
