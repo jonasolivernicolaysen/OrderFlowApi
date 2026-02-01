@@ -5,7 +5,7 @@ namespace OrderFlowApi.Mappers
 {
     public class OrderMapper
     {
-        public static OrderModel ToCreateModel(CreateOrderDto dto, int userId)
+        public static OrderModel ToOrderModel(CreateOrderDto dto, int userId)
         {
             return new OrderModel
             {

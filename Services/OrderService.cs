@@ -19,7 +19,7 @@ namespace OrderFlowApi.Services
         // create order
         public async Task<OrderModel> CreateOrderAsync(CreateOrderDto dto, int userId)
         {
-            var order = OrderMapper.ToCreateModel(dto, userId);
+            var order = OrderMapper.ToOrderModel(dto, userId);
             if (order == null)
                 throw new BadOrderException("Order if insufficcient");
 
@@ -29,13 +29,11 @@ namespace OrderFlowApi.Services
         }
 
         // get order by order id
-        public async Task<OrderModel?> GetOrderByIdAsync(Guid orderId)
+        public async Task<OrderModel?> GetOrderByIdAsync(Guid orderId, int userId)
         {
             var order = await _context.Orders.FindAsync(orderId);
             if (order == null)
                 throw new OrderNotFoundException(orderId);
-
-            var userId = FakeUserLogic.GetCurrentUserId();
 
             if (order.UserId != userId)
                 throw new UserNotAuthorizedException();

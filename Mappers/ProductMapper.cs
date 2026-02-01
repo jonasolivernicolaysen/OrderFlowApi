@@ -5,11 +5,12 @@ namespace OrderFlowApi.Mappers
 {
     public class ProductMapper
     {
-        public static ProductModel ToModel(ProductDto product)
+        public static ProductModel ToProductModel(CreateProductDto product, int userId)
         {
             return new ProductModel
             {
                 ProductName = product.ProductName,
+                CreatedByUserId = userId,
                 Price = product.Price,
                 Description = product.Description
             };
