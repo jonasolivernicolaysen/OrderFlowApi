@@ -21,7 +21,7 @@ namespace OrderFlowApi.Mappers
         {
             return new PaymentDto
             {
-                PayingAccount = product.PayingAccount,
+                AccountNumber = product.PayingAccount,
                 Status = product.Status
             };
         }
