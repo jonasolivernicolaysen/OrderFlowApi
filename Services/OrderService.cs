@@ -4,6 +4,7 @@ using OrderFlowApi.Models;
 using OrderFlowApi.Mappers;
 using OrderFlowApi.User;
 using OrderFlowApi.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace OrderFlowApi.Services
@@ -22,6 +23,9 @@ namespace OrderFlowApi.Services
             var order = OrderMapper.ToOrderModel(dto, userId);
             if (order == null)
                 throw new BadOrderException("Order if insufficcient");
+
+            // check if product exists
+            var product = await GetProductOrThrowAsync(dto.ProductId);
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
@@ -63,7 +67,6 @@ namespace OrderFlowApi.Services
         }
 
         // cancel order
-        // somehow send request to controller. this action should only be possible if order is not shipped
         public async Task<OrderModel> CancelOrderAsync(Guid orderId, int userId)
         {
             var order = await _context.Orders.FindAsync(orderId);
@@ -84,6 +87,49 @@ namespace OrderFlowApi.Services
 
             await _context.SaveChangesAsync();
             return order;
+        }
+
+        // pay for order
+        public async Task<PaymentModel> PayForOrderAsync(Guid orderId, int accountNumber, int userId)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+                throw new OrderNotFoundException(orderId);
+
+            if (order.UserId != userId)
+                throw new UserNotAuthorizedException();
+
+            var product = await _context.Products.FindAsync(order.ProductId);
+            if (product == null)
+                throw new ProductNotFoundException(order.ProductId);
+          
+            var totalCost = product.Price * order.Quantity;
+
+            if (order.Status == OrderStatus.Paid)
+            {
+                return await _context.Payments.FirstAsync(p => p.OrderId == orderId);
+            }
+
+            if (order.Status != OrderStatus.Pending)
+                throw new InvalidOrderStateException("Only pending orders can be paid for.");
+
+            var payment = PaymentMapper.ToPaymentModel(orderId, accountNumber, 999999, PaymentStatus.Completed);
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            _context.Payments.Add(payment);
+            order.Status = OrderStatus.Paid;
+            order.LastUpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+            return payment;
+        }
+
+        // check if id exists
+        public async Task<ProductModel?> GetProductOrThrowAsync(Guid productId)
+        {
+            return await _context.Products.FindAsync(productId) ?? throw new ProductNotFoundException(productId);
         }
     }
 }

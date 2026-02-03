@@ -12,7 +12,7 @@ namespace OrderFlowApi.Mappers
                 UserId = userId,
                 ProductId = dto.ProductId,
                 Quantity = dto.Quantity,
-                Status = OrderStatus.Received,
+                Status = OrderStatus.Pending,
                 CreatedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow
             };
@@ -26,7 +26,8 @@ namespace OrderFlowApi.Mappers
                 ProductId = order.ProductId,
                 Quantity = order.Quantity,
                 Status = order.Status,
-                CreatedAt = order.CreatedAt
+                CreatedAt = order.CreatedAt,
+                LastUpdatedAt = order.LastUpdatedAt
             };
         }
     }

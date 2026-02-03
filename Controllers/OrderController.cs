@@ -56,5 +56,14 @@ namespace OrderFlowApi.Controllers
             var result = await _orderService.CancelOrderAsync(orderId, userId);
             return Ok(OrderMapper.ToDto(result));
         }
+
+        // pay for order
+        [HttpPost("{orderId:guid}/pay")]
+        public async Task<IActionResult> PayForOrder(AccountNumberDto dto, Guid orderId)
+        {
+            var userId = FakeUserLogic.GetCurrentUserId();
+            var result = await _orderService.PayForOrderAsync(orderId, dto.AccountNumber, userId);
+            return Ok(PaymentMapper.ToDto(result));
+        }
     }
 }

@@ -85,9 +85,8 @@ namespace OrderFlowApi.Services
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null)
-            {
                 throw new ProductNotFoundException(productId);
-            }
+            
             return product;
         }
     }

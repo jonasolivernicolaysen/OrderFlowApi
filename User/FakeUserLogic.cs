@@ -10,5 +10,10 @@
             }
             return 1;
         }
+
+        public FakeUser GetCurrentUser(int userId)
+        {
+            return new FakeUser();
+        }
     }
 }

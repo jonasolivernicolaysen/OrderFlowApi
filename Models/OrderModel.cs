@@ -6,6 +6,7 @@ namespace OrderFlowApi.Models
     {
         [Key]
         public Guid OrderId { get; set; }
+        public Guid PaymentId { get; set; }
         public int UserId { get; set; }
         [Required]
         public Guid ProductId { get; set; }
