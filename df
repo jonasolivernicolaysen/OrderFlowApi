@@ -1,0 +1,11 @@
+[33ma6777f7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Added PaymentController and PaymentService. Added GetPaymentsForOrderAsync function.
+[33m196a7fb[m Added ToPaymentModel function. Fixed problems in PayForOrderAsync function. Added GetProductOrThrow function.
+[33m3ace9ea[m added logic in orderservice and ordercontroller for cancelling order
+[33maef23f8[m Added exception handling middleware to remove try catch blocks in the controller. Cleaned up orderController
+[33mc5bbbf1[m changed method signatures in productservice so all functions return productmodel instead of bool. Added exception handling.
+[33m0eb450e[m Added productService with functions CreateProductListingAsync, UpdateProductListingAsync, DeleteProductListingAsync, ViewProductsAsync, ViewProductsAsync
+[33m14f7e87[m fixed createorderdto, updatemodeldto and ordermapper functions. added working async controller and orderservice functions
+[33m2ac6915[m Added stable storage using dbcontext and sqlite. added logic for creating, updating and fetching orders in OrderService.
+[33m984d1b2[m Added Order models and order dto
+[33m5f38c0f[m Add project files.
+[33mae34548[m Add .gitattributes and .gitignore.
