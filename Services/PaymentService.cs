@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OrderFlowApi.Exceptions;
 using OrderFlowApi.Models;
+using OrderFlowApi.Infrastructure;
 
 namespace OrderFlowApi.Services
 {

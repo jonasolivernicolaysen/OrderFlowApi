@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OrderFlowApi.Exceptions;
 using OrderFlowApi.Services;
+using OrderFlowApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<PaymentService>();
 
 builder.Services
     .AddControllers()
@@ -51,3 +53,5 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

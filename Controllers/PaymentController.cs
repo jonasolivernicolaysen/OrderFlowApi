@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderFlowApi.Mappers;
 using OrderFlowApi.Services;
 using OrderFlowApi.User;
 
@@ -21,7 +22,7 @@ namespace OrderFlowApi.Controllers
             var userId = FakeUserLogic.GetCurrentUserId();
             var payments = await _paymentService.GetPaymentsForOrderAsync(orderId, userId);
 
-            return Ok(payments);
+            return Ok(payments.Select(PaymentMapper.ToDto));
         }
     }
 }
