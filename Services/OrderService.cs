@@ -56,8 +56,10 @@ namespace OrderFlowApi.Services
             if (order.UserId != userId)
                 throw new UserNotAuthorizedException();
 
-            if (order.Status == OrderStatus.Shipped)
+            if (order.Status != OrderStatus.Pending)
                 throw new InvalidOrderStateException("Cannot update shipped order.");
+
+            
 
             order.ProductId = dto.ProductId;
             order.Quantity = dto.Quantity;

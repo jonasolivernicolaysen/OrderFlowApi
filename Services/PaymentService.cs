@@ -17,7 +17,8 @@ namespace OrderFlowApi.Services
 
         public async Task<List<PaymentModel>> GetPaymentsForOrderAsync(Guid orderId, int userId)
         {
-            var order = await _context.Orders.FindAsync(orderId) ?? throw new OrderNotFoundException(orderId);
+            var order = await _context.Orders.FindAsync(orderId) 
+                ?? throw new OrderNotFoundException(orderId);
 
             if (order.UserId != userId)
                 throw new UserNotAuthorizedException();
