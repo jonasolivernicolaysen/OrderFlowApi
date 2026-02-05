@@ -92,3 +92,8 @@ SQLite
 xUnit
 
 WebApplicationFactory
+
+## Run
+dotnet run 
+
+PS: add /swagger to the provided url
